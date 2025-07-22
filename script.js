@@ -7,23 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroBtn = document.getElementById('hero-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const mainNav = document.querySelector('.main-nav');
+    const adOverlay = document.getElementById('ad-overlay'); // الطبقة الشفافة
 
     let moviesData = [
-
-{
-  "id": 3,
-  "title": "اغنيه العيد ",
-  "description": "اغانيه رومانسيه ",
-  "poster": "https://zaaednews.com/wp-content/uploads/2024/09/%D8%AD%D9%81%D9%84-%D8%A3%D9%86%D8%BA%D8%A7%D9%85-%D9%84%D9%8A%D8%A7%D9%84%D9%8A-%D9%85%D8%B5%D8%B1-%D9%81%D9%8A-%D8%A7%D9%84%D9%85%D8%AA%D8%AD%D9%81-%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A-%D8%A7%D9%84%D9%83%D8%A8%D9%8A%D8%B1.jpg0_.jpg",
-  "year": "2024",
-  "category": "رومانسي",
-  "director": "انغام",
-  "stars": ["ممثل 1", "ممثل 2"],
-  "embed_url": "https://player.vimeo.com/video/1091276533"
-
-}
-,
-
+        {
+            "id": 3,
+            "title": "اغنيه العيد ",
+            "description": "اغانيه رومانسيه ",
+            "poster": "https://zaaednews.com/wp-content/uploads/2024/09/%D8%AD%D9%81%D9%84-%D8%A3%D9%86%D8%BA%D8%A7%D9%85-%D9%84%D9%8A%D8%A7%D9%84%D9%8A-%D9%85%D8%B5%D8%B1-%D9%81%D9%8A-%D8%A7%D9%84%D9%85%D8%AA%D8%AD%D9%81-%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A-%D8%A7%D9%84%D9%83%D8%A8%D9%8A%D8%B1.jpg0_.jpg",
+            "year": "2024",
+            "category": "رومانسي",
+            "director": "انغام",
+            "stars": ["ممثل 1", "ممثل 2"],
+            "embed_url": "https://player.vimeo.com/video/1091276533"
+        }
+        // يمكن إضافة المزيد من الأفلام هنا
     ];
 
     // Toggle mobile menu
@@ -33,6 +31,34 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileMenu.classList.toggle('active');
         });
     }
+
+    // ** بداية منطق الطبقة الشفافة والإعلان المعدّل **
+    function openAdInNewTab() {
+        // تم تحديث هذا السطر باستخدام الرابط الذي قدمته
+        const adUrl = 'https://www.profitableratecpm.com/sd42edy8?key=da8388f2dbac3becd26109728880e1b5'; 
+
+        try {
+            const newTab = window.open(adUrl, '_blank');
+            if (newTab) {
+                // قد لا يعمل التركيز دائمًا بسبب سياسات المتصفح، لكنها محاولة
+                newTab.focus();
+                // يمكن هنا إخفاء الـ overlay إذا كان الإعلان يفتح بنجاح
+                // adOverlay.style.display = 'none'; 
+            } else {
+                console.warn('Pop-up blocked! Please allow pop-ups for this site.');
+                alert('لقد تم حظر النافذة المنبثقة. يرجى السماح بالنوافذ المنبثقة للموقع.');
+            }
+        } catch (e) {
+            console.error('Failed to open ad pop-up:', e);
+            alert('حدث خطأ أثناء محاولة فتح الإعلان. يرجى التأكد من السماح بالنوافذ المنبثقة.');
+        }
+    }
+
+    // ربط النقر على الطبقة الشفافة بدالة فتح الإعلان
+    if (adOverlay) {
+        adOverlay.addEventListener('click', openAdInNewTab);
+    }
+    // ** نهاية منطق الطبقة الشفافة والإعلان المعدّل **
 
     // تحديث رابط URL مع تغيير الحالة (pushState)
     function updateUrl(id = null) {
@@ -56,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
             movieCard.classList.add('movie-card');
             movieCard.setAttribute('role', 'listitem');
 
-            // العنصر a للتنقل مع preventDefault و pushState لاحقاً
             const movieLink = document.createElement('a');
             movieLink.href = `?id=${movie.id}`;
             movieLink.dataset.id = movie.id;
@@ -70,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
             movieGrid.appendChild(movieCard);
         });
 
-        // تحديث قسم الفيلم المميز (أول فيلم أو الذي id=1)
         const featuredMovie = moviesData.find(m => m.id === 1) || moviesData[0];
         if (featuredMovie) {
             heroSection.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${featuredMovie.poster}')`;
@@ -112,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateUrl(id);
             setActiveNav(false);
         } else {
-            // إذا الفيلم غير موجود، العودة للرئيسية
             displayMovies();
             updateUrl(null);
             setActiveNav(true);
@@ -133,21 +156,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // التعامل مع الروابط الداخلية بدون إعادة تحميل الصفحة
     document.body.addEventListener('click', (e) => {
+        // نتأكد أن النقر لم يكن على الطبقة الشفافة نفسها
+        if (e.target.id === 'ad-overlay') {
+            return; // دع معالج حدث الـ overlay الخاص يقوم بعمله
+        }
+
         const target = e.target.closest('a');
         if (!target) return;
 
-        // روابط الأفلام والفيلم المميز فقط
         if (target.dataset.id) {
             e.preventDefault();
             const id = target.dataset.id;
             navigateToMovie(id);
-            // إغلاق قائمة الهاتف لو مفتوحة
             if (mainNav.classList.contains('active')) {
                 mainNav.classList.remove('active');
                 mobileMenu.classList.remove('active');
             }
-        }
-        else if (target.dataset.action === 'home') {
+        } else if (target.dataset.action === 'home') {
             e.preventDefault();
             displayMovies();
             updateUrl(null);

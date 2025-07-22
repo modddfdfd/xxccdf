@@ -17,7 +17,7 @@
     --gradient-end: #3b0060; /* نهاية التدرج اللوني للـ accent */
     --border-color: #2F2F2F; /* لون خطوط فاصلة أو حدود خفيفة */
     --shadow-color-dark: rgba(0, 0, 0, 0.7); /* ظلال ناعمة وداكنة */
-    --shadow-color-light: rgba(187, 134, 252, 0.3); /* ظلال خفيفة بلون الـ accent */
+    --shadow-color-accent: rgba(187, 134, 252, 0.3); /* ظل خاص بلون الـ accent */
     --transition-speed: 0.4s; /* سرعة الانتقال الافتراضية */
 }
 
@@ -462,6 +462,19 @@ h1, h2, .section-title {
     transform: translateY(-3px) scale(1.1); /* حركة بسيطة عند الهوفر */
 }
 
+/* Overlay for Ads */
+#ad-overlay {
+    position: fixed; /* لتغطية الشاشة بأكملها وثباتها عند التمرير */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* خلفية سوداء شفافة */
+    z-index: 9999; /* لضمان ظهورها فوق كل العناصر الأخرى */
+    cursor: pointer; /* لإظهار مؤشر اليد عند المرور فوقها */
+    display: block; /* للتأكد من أنها مرئية دائمًا */
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .container {
@@ -483,19 +496,36 @@ h1, h2, .section-title {
         font-size: 1.8rem;
     }
 
+    /* Mobile Navigation */
     .main-nav {
-        right: -100%;
-        width: 260px; /* عرض القائمة الجانبية أصغر قليلاً */
-        padding-top: 70px; /* ضبط البادينج العلوي */
+        position: fixed;
+        top: 0;
+        right: -260px; /* إخفاء القائمة في البداية */
+        left: auto;
+        height: 100%;
+        width: 260px; /* عرض القائمة الجانبية */
+        background: var(--bg-medium);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 70px;
         box-shadow: -5px 0 25px var(--shadow-color-dark);
+        transition: transform 0.3s ease-out;
+        z-index: 1001;
     }
     .main-nav.active {
+        transform: translateX(0);
         right: 0;
     }
 
     .main-nav ul {
+        flex-direction: column;
+        text-align: center;
+        width: 100%;
+        padding: 0;
+        margin: 0;
         gap: 0.8rem;
-        margin: 0 1rem;
     }
 
     .main-nav ul li a {
@@ -505,7 +535,7 @@ h1, h2, .section-title {
 
     .menu-toggle {
         display: flex;
-        margin-right: 10px;
+        margin-left: 10px;
     }
 
     /* Hero Section adjustments for mobile */
@@ -515,7 +545,7 @@ h1, h2, .section-title {
     }
     .hero-content {
         padding: 15px;
-        background: rgba(0, 0, 0, 0.6); /* خلفية أغمق للمحتوى على الموبايل */
+        background: rgba(0, 0, 0, 0.6);
     }
     .hero-content h2 {
         font-size: 2.2rem;
@@ -537,7 +567,7 @@ h1, h2, .section-title {
         margin-bottom: 1.5rem;
     }
     .movie-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 2 عمود أصغر على الموبايل */
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 1rem;
         padding-bottom: 40px;
     }
@@ -546,7 +576,7 @@ h1, h2, .section-title {
         box-shadow: 0 5px 15px var(--shadow-color-dark);
     }
     .movie-card img {
-        height: 200px; /* ارتفاع مناسب لبوسترات الأفلام على الموبايل */
+        height: 200px;
         border-radius: 10px 10px 0 0;
     }
     .movie-card h3 {
@@ -569,7 +599,7 @@ h1, h2, .section-title {
         font-size: 0.9rem;
     }
     .movie-player-container {
-        padding-bottom: 75%; /* نسبة أبعاد 4:3 للفيديو على الموبايل ممكن تكون أفضل */
+        padding-bottom: 75%;
         border-radius: 10px;
         box-shadow: 0 5px 20px var(--shadow-color-dark);
     }
