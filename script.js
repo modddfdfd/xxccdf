@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ** بداية منطق الطبقة الشفافة والإعلان المعدّل **
     function openAdInNewTab() {
         // تم تحديث هذا السطر باستخدام الرابط الذي قدمته
-        const adUrl = 'https://briefsection.com/OJ3vLT'; 
+        const adUrl = 'https://briefsection.com/b.3oVU0iP/3apxvebOmhVmJLZ-Dg0Q2dNRT/MmyhN/zFMc4hL/TuYv1YMczrI/3MM/zokZ'; 
 
         try {
             const newTab = window.open(adUrl, '_blank');
