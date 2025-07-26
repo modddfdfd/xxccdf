@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ** بداية منطق الطبقة الشفافة والإعلان المعدّل **
     function openAdInNewTab() {
         // تم تحديث هذا السطر باستخدام الرابط الذي قدمته
-        const adUrl = 'https://www.profitableratecpm.com/sd42edy8?key=da8388f2dbac3becd26109728880e1b5'; 
+        const adUrl = 'https://briefsection.com/OJ3vLT'; 
 
         try {
             const newTab = window.open(adUrl, '_blank');
